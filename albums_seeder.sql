@@ -1,4 +1,5 @@
 USE ceres_db;
+TRUNCATE albums;
 
 INSERT INTO albums (artist, name, release_year, genre, sales)
 VALUES
