@@ -14,3 +14,14 @@ SHOW CREATE TABLE table_name;
 DROP USER 'username'@'hostname';
 DROP TABLE table_name [IF EXISTS];
 DROP DATABASE database_name;
+INSERT INTO table_name (field1, field2, ...)
+VALUES ('value1', 'value2', ...);
+
+INSERT INTO books (title, author_first_name, author_last_name)
+VALUES ('One Fish, Two Fish, Red Fish, Blue Fish','Dr.','Seuss'),
+('Atlas Shrugged', "Ayn", 'Rand'),
+('Great Work', 'David', 'Sturt'),
+('Everybody Poops', 'Taro', 'Gomi');
+
+INSERT INTO quotes(author_first_name,author_last_name,content)
+VALUES ('Charles','Lemagne','Knowing a second language is to have a second soul.')
