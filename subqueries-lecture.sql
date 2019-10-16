@@ -36,48 +36,88 @@ use employees;
 # find the information for the departments where the department name is 'Customer Service'
 
 	# first find the department number
-	SELECT dept_no FROM departments WHERE dept_name = 'Customer Service'; # sub-query part
 
-	SELECT *
-	FROM departments
-	WHERE dept_no = (
-		SELECT dept_no FROM departments WHERE dept_name = 'Customer Service'
-	);
+
+# select dept_name from departments where dept_name = 'Customer Service';
+
+describe departments;
+
+select * from departments
+where dept_name IN (
+    select dept_name from departments
+    where dept_name = 'Customer Service'
+       OR dept_name = 'Sales'
+);
+
+select dept_name from departments
+where dept_name = 'Customer Service'
+   OR dept_name = 'Sales';
+
+
+
 
 # Curriculum Example... find the first name, last name, and birth date for the first 10 department managers
 
-SELECT first_name, last_name, birth_date
-FROM employees
-WHERE emp_no IN (
-    SELECT emp_no
-    FROM dept_manager
+select first_name, last_name, birth_date from employees
+where emp_no IN (
+    select emp_no from dept_manager # manager employee numbers
 )
 LIMIT 10;
 
+
+
 # return historical department manager employee numbers of the Sales department
 
-SELECT emp_no
-FROM dept_manager
-WHERE dept_no IN (
-    SELECT dept_no
-    FROM departments
-    WHERE dept_name = 'Sales'
+select * from dept_manager
+where dept_no = (
+    select dept_no from departments where dept_name = 'Sales'
 );
+
+
+
+
+
+
+
+
 
 
 # Can achieve same results as an inner join
 
 	# find first name and last of all department managers
-	SELECT e.first_name, e.last_name
-	FROM employees AS e
-	JOIN dept_manager AS dm
-		ON dm.emp_no = e.emp_no;
 
-	SELECT first_name, last_name
-	FROM employees
-	WHERE emp_no IN (
-		SELECT emp_no FROM dept_manager
-	);
+    select first_name, last_name from employees
+    join dept_manager dm on employees.emp_no = dm.emp_no;
+
+    select first_name, last_name from employees
+    where emp_no IN (
+        select emp_no from dept_manager
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ============== ADDITIONAL EXAMPLES
