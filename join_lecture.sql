@@ -34,6 +34,9 @@ CREATE TABLE pets (
   PRIMARY KEY (id)
 );
 
+show tables;
+
+
 # seed tables
 
 INSERT INTO pets (pet_name, owner_id, age)
@@ -46,7 +49,7 @@ INSERT INTO owners (name, address)
 VALUES ('Darth Smith', '1138 Death Star Rd.');
 
 INSERT INTO pets (pet_name, owner_id, age)
-VALUES ('Puddle', 1, 2); -- will run
+VALUES ('Fiddle', 1, 2); -- will run
 
 
 SELECT * FROM pets;
@@ -59,28 +62,53 @@ SELECT * FROM owners;
 
 SELECT pets.pet_name, owners.address
 FROM pets
-JOIN owners ON owners.id = pets.owner_id;
+JOIN owners ON pets.owner_id = owners.id;
 
-# TODO: List the pet name, pet age, and owner name
 
-select p.pet_name, p.age, o.name
-from pets as p
-join owners as o
-on p.owner_id = o.id;
 
 # BASIC JOIN WITH ALIASES
 
 SELECT p.pet_name, o.address
 FROM pets AS p
-JOIN owners AS o ON o.id = p.owner_id;
+JOIN owners AS o ON p.owner_id = o.id;
+
+
+
+
+
+# TODO: List the pet name, pet age, and owner name
+
+select pets.pet_name, pets.age, owners.name from pets
+join owners on pets.owner_id = owners.id;
+
+
+
+
+
+
+# TODO: Write a query that will return the address and the age of the pet
+
+select owners.address, pets.age from owners
+join pets on owners.id = pets.owner_id;
+
+
+
+
+# TODO: (CHALLENGE) list of the type of each pet's toy and the pet's name
+
+
 
 
 # JOIN WITH GROUP BY
 # List the number of pets at each address
 
-SELECT owners.address, COUNT(owners.address) AS `number of pets at address` FROM pets
-JOIN owners ON owners.id = pets.owner_id
+
+SELECT owners.address, count(*)
+FROM pets
+JOIN owners ON pets.owner_id = owners.id
 GROUP BY owners.address;
+
+
 
 
 
@@ -96,6 +124,7 @@ CREATE TABLE roles (
   name VARCHAR(100) NOT NULL,
   PRIMARY KEY (id)
 );
+
 
 CREATE TABLE users (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -124,26 +153,21 @@ SELECT * FROM users;
 
 # output user name and role for all records with a non-null user name and role name
 
-SELECT users.name, roles.name
-FROM users
-JOIN roles -- same as INNER JOIN
-ON roles.id = users.role_id;
+select users.name, roles.name from users
+inner join roles on users.role_id = roles.id;
 
 
 # output user name and their role name for all matches and all users regardless of null roles
 
-SELECT users.name, roles.name
-FROM users
-LEFT JOIN roles
-ON roles.id = users.role_id;
+select users.name, roles.name from users
+left join roles on users.role_id = roles.id;
+
 
 
 # output user name and role for all non-null matches and all roles with null users
 
-SELECT users.name, roles.name
-FROM users
-RIGHT JOIN roles
-ON roles.id = users.role_id;
+select users.name, roles.name from users
+right join roles on users.role_id = roles.id;
 
 
 
@@ -157,35 +181,35 @@ USE employees;
 SELECT * FROM employees;
 SELECT * FROM titles;
 
-SELECT CONCAT(employees.first_name, ' ', employees.last_name), titles.title
-FROM employees
-JOIN titles
-ON titles.emp_no = employees.emp_no
-WHERE titles.to_date > NOW();
 
+select employees.first_name, employees.last_name, titles.title, titles.to_date
+from employees
+join titles on employees.emp_no = titles.emp_no
+where titles.to_date = NOW();
 
 
 # using aliases
-SELECT CONCAT(e.first_name, ' ', e.last_name), t.title
-FROM employees AS e
-JOIN titles as t
-ON t.emp_no = e.emp_no
-WHERE t.to_date > NOW();
 
+select e.first_name, e.last_name, t.title, t.to_date
+from employees as e
+join titles as t on e.emp_no = t.emp_no
+where t.to_date > NOW();
 
 
 # output name and current department for employee number 10001
+
+    # name of employee on the employees table
+    # name of the current department on the departments table
+    #
+
+
 USE employees;
 
-SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, d.dept_name
-FROM employees as e
-JOIN dept_emp as de
-ON de.emp_no = e.emp_no
-JOIN departments as d
-ON d.dept_no = de.dept_no
-WHERE de.to_date = '9999-01-01' AND e.emp_no = 10001;
-
-SELECT * FROM departments;
+select employees.first_name, employees.last_name, departments.dept_name
+from employees
+join dept_emp on employees.emp_no = dept_emp.emp_no
+join departments on dept_emp.dept_no = departments.dept_no
+where dept_emp.emp_no = 10001;
 
 
 
